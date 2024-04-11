@@ -3,9 +3,12 @@ from pathlib import Path
 from PIL import Image
 
 LABEL = ["logo", "year", "series", "issue number", "manufacturer"]
-LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT = "/Users/57block/label-studio-storage"
+LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT = "/host_directory/label-studio-storage"
+IMPORT_JSON_OUTPUT_PATH = "data/yolov/img/import.json"
+IMG_LOADING_PATH = "data/yolov/img"
+LABEL_LOADING_PATH = "data/yolov/label"
 LOCAL_STORAGE_PREFIX = "test"
-img_index_between = [1, 1000]
+img_index_between = [1, 10000]
 
 
 def convert(source_img: dict, score: float = 0.5, model_version: str = "yolov"):
@@ -75,19 +78,19 @@ def save_label_studio_import_json(to_saved_img_list: list):
         "id": item["name"],
     } for item in to_saved_img_list]
     # 绝对路径是LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT + local_storage_prefix
-    local_storage_prefix = Path(LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT) / LOCAL_STORAGE_PREFIX / "import.json"
+    local_storage_prefix = Path(IMPORT_JSON_OUTPUT_PATH)
     with open(local_storage_prefix, "w") as f:
         json.dump(to_saved_img_list, f, indent=4)
 
 
 if __name__ == '__main__':
     # 设置路径
-    img_path = Path("data/yolov/img")
-    label_path = Path("data/yolov/label")
+    img_path = Path(IMG_LOADING_PATH)
+    label_path = Path(LABEL_LOADING_PATH)
     # 遍历img_path下的所有图片
     img_list = []
     for index, img in enumerate(img_path.iterdir()):
-        if index < img_index_between[0] or index > img_index_between[1]:
+        if index <= img_index_between[0] or index > img_index_between[1]:
             continue
         # 读取名称并获取对应的label文件
         iter_img = img.name
@@ -112,12 +115,12 @@ if __name__ == '__main__':
             }
             img_list.append(one_img)
     # 先检查有没有目录没有就创建
-    local_storage_path = Path(LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT) / LOCAL_STORAGE_PREFIX
-    if not local_storage_path.exists():
-        local_storage_path.mkdir()
+    # local_storage_path = Path(LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT) / LOCAL_STORAGE_PREFIX
+    # if not local_storage_path.exists():
+    #     local_storage_path.mkdir()
     # 将img_list copy到local storage
-    for i in img_list:
-        image = Image.open(img_path / i["name"])
-        image.save(local_storage_path / i["name"])
+    # for i in img_list:
+    #     image = Image.open(img_path / i["name"])
+    #     image.save(local_storage_path / i["name"])
     # 将img_list保存为json文件
     save_label_studio_import_json(img_list)
