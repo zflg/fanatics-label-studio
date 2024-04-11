@@ -5,6 +5,7 @@ from PIL import Image
 LABEL = ["logo", "year", "series", "issue number", "manufacturer"]
 LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT = "/Users/57block/label-studio-storage"
 LOCAL_STORAGE_PREFIX = "test"
+img_index_between = [1, 1000]
 
 
 def convert(source_img: dict, score: float = 0.5, model_version: str = "yolov"):
@@ -85,7 +86,9 @@ if __name__ == '__main__':
     label_path = Path("data/yolov/label")
     # 遍历img_path下的所有图片
     img_list = []
-    for img in img_path.iterdir():
+    for index, img in enumerate(img_path.iterdir()):
+        if index < img_index_between[0] or index > img_index_between[1]:
+            continue
         # 读取名称并获取对应的label文件
         iter_img = img.name
         iter_label = iter_img.replace("jpg", "txt")
