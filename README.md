@@ -9,7 +9,7 @@ Build the Docker Image for Label Studio
 ```shell
 docker built -t label-studio .
 ```
-* Run a Docker container
+Run a Docker container for Label Studio
 * Mount the host machine directory /home/ec2-user/label-studio to the container directory /host_directory
 * The web service port for the label-studio container is 8080, map it to the host machine port 8080 (can be changed). Make sure to open the host machine's 8080 port to the internet for external access.
 ```shell
