@@ -1,7 +1,6 @@
 # 1. 部署label-studio
 ## 1.1. 安装docker
 ## 1.2. 部署label-studio到docker
-```shell
 创建宿主机的挂载文件目录
 ```shell
 mkdir -p /home/ec2-user/label-studio
@@ -22,8 +21,7 @@ docker run -p 8080:8080 -v /home/ec2-user/label-studio:/host_directory --name la
 * Sign up to create new account
 * Login in
 * Create new project
-* + project name
-* + upload data
-* + - upload data by 'Upload Files'
-* + - upload data from local directory '/host_directory'
+  + project name
+  + upload data
+  + Labeling Setup
 * labeling
